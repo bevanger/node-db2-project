@@ -15,6 +15,10 @@ router.get('/:id', checkCarId, (req, res, next) => {
     res.status(200).json(req.car)
 });
 
+router.post('/', (req, res, next) => {
+
+});
+
 router.use((err, req, res, next) => {
     res.status(err.status || 500).json({ 
         message: err.message,

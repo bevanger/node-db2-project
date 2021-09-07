@@ -1,4 +1,3 @@
-const e = require('express');
 const Cars = require('./cars-model');
 
 const checkCarId = (req, res, next) => {
@@ -16,15 +15,32 @@ const checkCarId = (req, res, next) => {
 }
 
 const checkCarPayload = (req, res, next) => {
-  // DO YOUR MAGIC
+  const { vin, make, model, mileage } = req.body;
+  if(vin === undefined || make === undefined || model === undefined || mileage === undefined) {
+    next({ message: '<field name> is missing', status: 400 })
+  } else{ 
+    next()
+  }
 }
 
 const checkVinNumberValid = (req, res, next) => {
-  // DO YOUR MAGIC
+  if(typeof vin !== 'string') {
+    next({ message: 'vin <vin number> is invalid', status: 400})
+  } else {
+    next()
+  }
 }
 
 const checkVinNumberUnique = (req, res, next) => {
-  // DO YOUR MAGIC
+  const { vin } = req.body
+  Cars.getByVin(vin)
+    .then((vinInUse) => {
+      if(vinInUse.length > 0) {
+        next({ message: 'vin <vin number> already exists', status: 400 })
+      } else { 
+        next()
+      }
+    })
 }
 
 module.exports = { checkCarId, checkCarPayload, checkVinNumberValid, checkVinNumberUnique }

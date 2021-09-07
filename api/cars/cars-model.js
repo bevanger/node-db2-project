@@ -14,8 +14,13 @@ async function create(car) {
   return getById(id)
 }
 
+const getByVin = vin => {
+  return db('cars').where('vin', vin)
+}
+
 module.exports = {
   getAll, 
   getById, 
   create,
+  getByVin,
 }
